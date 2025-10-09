@@ -3,30 +3,33 @@ import cv2
 import time
 import torch
 
+
+MODEL_NAME = "yolov8n.pt"
+VIDEO_NAME = "video3.mp4"
+
+'''
 print(f"CUDA : {torch.cuda.is_available()}")
 print(f"CUDA : {torch.cuda.device_count()}")
 if torch.cuda.is_available():
     print(f"GPU: {torch.cuda.get_device_name(0)}")
+'''
 
 
+model = YOLO(f"models/{MODEL_NAME}")
 
-model = YOLO("yolo11m.pt")
-
-video_source = "video9.mp4"
+video_source = f"videos/{VIDEO_NAME}"
 
 #
-cap = cv2.VideoCapture(video_source)
-fps = cap.get(cv2.CAP_PROP_FPS)
-frame_delay = 1.0 / fps
-cap.release()
 
-results = model.predict(
+results = model.track(
+    
     source=video_source,
     classes=[0],
     show=False,
     save=False,
     stream=True,
     device=0,
+    imgsz=640,
     conf=0.25,
 )
 

@@ -2,6 +2,10 @@ from ultralytics import YOLO
 import time
 import torch
 
+
+MODEL_NAME = "yolov8n.pt"
+VIDEO_NAME = "video8.mp4"
+
 print(f"CUDA : {torch.cuda.is_available()}")
 print(f"CUDA : {torch.cuda.device_count()}")
 if torch.cuda.is_available():
@@ -9,19 +13,21 @@ if torch.cuda.is_available():
 
 
 
-model = YOLO("yolo11m.pt")
+model = YOLO(f"models/{MODEL_NAME}")
 
-video_source = "video9.mp4"
+video_source = f"videos/{VIDEO_NAME}"
 
 start_time = time.time()
 
-results = model.predict(
+results = model.track(
     source=video_source,
     classes=[0],
-    show=True,  #
+    show=True,  
     save=False,
+    persist=True,
     stream=True,
     device=0,
+    imgsz=640,
     conf=0.25,
 )
 

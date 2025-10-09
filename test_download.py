@@ -1,5 +1,5 @@
 from ultralytics import YOLO
-import cv2
+
 import time
 import os
 import shutil
@@ -7,17 +7,22 @@ import glob
 import torch
 
 
+MODEL_NAME = "yolo11m.pt"
+VIDEO_NAME = "video9.mp4"
+OUTPUT_NAME = "v11m_v9.mp4"
+OUTPUT_FOLDER = "detect_m"
+
 print(f"CUDA : {torch.cuda.is_available()}")
 print(f"CUDA : {torch.cuda.device_count()}")
 if torch.cuda.is_available():
     print(f"GPU: {torch.cuda.get_device_name(0)}")
 
 
-model = YOLO("yolo11m.pt")
+model = YOLO(f"models/{MODEL_NAME}")
 
-video_source = "video9.mp4"
-output_name = "v11m_v9.mp4"
-output_folder = "detect_m"
+video_source = f"videos/{VIDEO_NAME}"
+output_name = OUTPUT_NAME
+output_folder = OUTPUT_FOLDER
 
 results = model.predict(
     source=video_source,
