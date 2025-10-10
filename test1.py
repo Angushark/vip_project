@@ -4,7 +4,7 @@ import torch
 
 
 MODEL_NAME = "yolov8n.pt"
-VIDEO_NAME = "video8.mp4"
+VIDEO_NAME = "video10.mp4"
 
 print(f"CUDA : {torch.cuda.is_available()}")
 print(f"CUDA : {torch.cuda.device_count()}")
@@ -13,7 +13,11 @@ if torch.cuda.is_available():
 
 
 
-model = YOLO(f"models/{MODEL_NAME}")
+try:
+    model = YOLO(f"models/{MODEL_NAME}")
+except Exception as e:
+    
+    model = YOLO(MODEL_NAME)  
 
 video_source = f"videos/{VIDEO_NAME}"
 

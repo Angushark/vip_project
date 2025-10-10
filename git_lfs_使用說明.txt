@@ -1,0 +1,108 @@
+Git LFS Usage Guide
+===================
+
+## [IMPORTANT] Must Do After Clone or Pull
+
+After cloning the project or pulling latest code, LFS files may only be pointers (very small files).
+You MUST run this command to download the actual large files:
+
+   git lfs pull
+
+This will download all actual large files (models, videos, etc.).
+If your model files are only 100-200 bytes, you forgot to run this command!
+
+
+## Daily Push Workflow (For Projects with LFS Already Set Up)
+
+1. Check status
+   git status
+
+2. Add changed files
+   git add .
+
+3. Commit changes
+   git commit -m "Your commit message"
+
+4. Push to GitHub
+   git push
+
+That's it! LFS will automatically handle large files.
+
+
+## Initial Git LFS Setup (New Project)
+
+1. Install and initialize Git LFS
+   git lfs install
+
+2. Track file types (e.g., videos and model files)
+   git lfs track "*.mp4"
+   git lfs track "*.pt"
+   git lfs track "*.avi"
+
+3. Add .gitattributes file
+   git add .gitattributes
+
+4. Commit and push
+   git add .
+   git commit -m "Enable Git LFS"
+   git push
+
+
+## Migrate Existing Large Files to LFS
+
+If your project already has large files in commit history:
+
+1. Set up LFS tracking first
+   git lfs track "*.mp4"
+   git lfs track "*.pt"
+
+2. Migrate all large files from history
+   git lfs migrate import --include="*.mp4,*.pt" --everything
+
+3. Force push (because history was rewritten)
+   git push --force
+
+
+## Common Commands
+
+View tracked file types:
+   git lfs track
+
+View files managed by LFS:
+   git lfs ls-files
+
+View LFS status:
+   git lfs status
+
+Download all LFS files:
+   git lfs pull
+
+
+## FAQ
+
+Q: Model files are only 100-200 bytes and can't be used?
+A: Run git lfs pull to download actual files
+
+Q: Getting "file too large" error when pushing?
+A: Make sure you ran git lfs track for that file type
+
+Q: Models corrupted after clone?
+A: Run git lfs pull to download actual LFS files
+
+
+## Important Notes
+
+1. Once LFS is set up, daily usage is the same as regular git
+2. LFS files show as "Git LFS" pointers and don't take up local repo space
+3. GitHub free accounts have LFS storage and bandwidth limits
+4. Collaborators also need Git LFS installed to handle large files properly
+5. Remember to run git lfs pull after clone or pull!
+
+
+## LFS Tracked File Types in This Project
+
+- *.mp4 (video files)
+- *.pt (model files)
+- *.avi (video files)
+
+All files in models/ and videos/ directories are automatically managed by LFS.
