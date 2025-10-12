@@ -7,10 +7,10 @@ import glob
 import torch
 
 
-MODEL_NAME = "yolo11m.pt"
-VIDEO_NAME = "video9.mp4"
-OUTPUT_NAME = "v11m_v9.mp4"
-OUTPUT_FOLDER = "detect_m"
+MODEL_NAME = "yolo11n.pt"
+VIDEO_NAME = "video15.mp4"
+OUTPUT_NAME = "v11n_video15.mp4"
+OUTPUT_FOLDER = "detect_n"
 
 print(f"CUDA : {torch.cuda.is_available()}")
 print(f"CUDA : {torch.cuda.device_count()}")
@@ -33,6 +33,8 @@ results = model.predict(
     project=".",
     name=output_folder,
     exist_ok=True,
+    imgsz=640,
+    conf=0.25,
     device=0
 )
 
