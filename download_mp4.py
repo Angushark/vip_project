@@ -10,7 +10,7 @@ import torch
 # Model array
 MODELS = ["yolov8n.pt", "yolov10n.pt", "yolo11n.pt"]
 # Video array
-VIDEOS = ["video3.mp4", "video7.mp4", "video8.mp4", "video9.mp4", "video10.mp4", "video13.mp4", "video14.mp4", "video15.mp4"]
+VIDEOS = ["video17.mp4", "video18.mp4", "video19.mp4", "video20.mp4"]
 OUTPUT_FOLDER = "detect_n"
 
 print(f"CUDA : {torch.cuda.is_available()}")
