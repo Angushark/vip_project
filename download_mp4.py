@@ -8,10 +8,10 @@ import torch
 
 
 # Model array
-MODELS = ["yolov8n.pt", "yolov10n.pt", "yolo11n.pt"]
+MODELS = [ "best.pt"]
 # Video array
-VIDEOS = ["video17.mp4", "video18.mp4", "video19.mp4", "video20.mp4"]
-OUTPUT_FOLDER = "detect_n"
+VIDEOS = ["video3.mp4", "video8.mp4", "video10.mp4", "video13.mp4", "video14.mp4", "video16.mp4", "video18.mp4", "video19.mp4", "video20.mp4"]
+OUTPUT_FOLDER = "detect_pre1"
 
 print(f"CUDA : {torch.cuda.is_available()}")
 print(f"CUDA : {torch.cuda.device_count()}")
@@ -53,7 +53,7 @@ for model_name in MODELS:
         # Track with persist=True
         results = model.track(
             source=video_source,
-            classes=[0],
+            #classes=[0],
             show=False,
             save=True,
             stream=True,

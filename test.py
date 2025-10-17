@@ -4,8 +4,8 @@ import time
 import torch
 
 
-MODEL_NAME = "yolov8n.pt"
-VIDEO_NAME = "video10.mp4"
+MODEL_NAME = "best.pt"
+VIDEO_NAME = "video18.mp4"
 
 
 print(f"CUDA : {torch.cuda.is_available()}")
@@ -24,7 +24,7 @@ video_source = f"videos/{VIDEO_NAME}"
 results = model.track(
     
     source=video_source,
-    classes=[0],
+    #classes=[0],
     show=False,
     save=False,
     stream=True,
