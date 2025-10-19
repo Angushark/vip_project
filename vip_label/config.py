@@ -32,7 +32,7 @@ MAX_IMAGES_PER_BATCH = 1000        # Maximum images per batch (0 = no limit)
 # ============ Roboflow Configuration ============
 ROBOFLOW_WORKSPACE = "drowning-deteciotn"
 ROBOFLOW_PROJECT = "drowning-detection-h5gv0-bs2gm"
-ROBOFLOW_API_KEY = "E4EoDRwIwiTzCpceoVLN"              # Leave empty to read from environment variable
+ROBOFLOW_API_KEY = ""              # Leave empty to read from environment variable
 
 # ============ Other Configuration ============
 VERBOSE = False                    # Show verbose YOLO output
