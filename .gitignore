@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 只保留 vip_label 資料夾，排除其他所有資料夾
+/*
+!/vip_label/
+!.gitignore
+!.gitattributes
