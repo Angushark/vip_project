@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 3
+names: ['danger', 'float', 'safe']
+
+roboflow:
+  workspace: drowning-deteciotn
+  project: drowning_detection_project-tft24
+  version: 2
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/drowning-deteciotn/drowning_detection_project-tft24/dataset/2

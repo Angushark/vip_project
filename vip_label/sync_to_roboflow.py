@@ -1,11 +1,12 @@
 """
 Roboflow sync script - Upload organized data to Roboflow using Python API
-Maps class IDs to correct class names from model_artifacts.json
+Maps class IDs to correct class names from data.yaml or model_artifacts.json
 """
 
 import sys
 import os
 import json
+import yaml
 from pathlib import Path
 from datetime import datetime
 from roboflow import Roboflow
@@ -13,23 +14,35 @@ import config
 
 
 def load_class_names():
-    """Load class names from model_artifacts.json"""
+    """Load class names from data.yaml (preferred) or model_artifacts.json (fallback)"""
+
+    # Try data.yaml first
+    data_yaml_path = Path(__file__).parent / "data.yaml"
+    if data_yaml_path.exists():
+        try:
+            with open(data_yaml_path, 'r') as f:
+                data = yaml.safe_load(f)
+                class_names = data.get('names', [])
+                print(f"Loaded class names from data.yaml: {class_names}")
+                return class_names
+        except Exception as e:
+            print(f"Error loading data.yaml: {e}")
+
+    # Fallback to model_artifacts.json
     artifacts_path = Path(__file__).parent / "model_artifacts.json"
+    if artifacts_path.exists():
+        try:
+            with open(artifacts_path, 'r') as f:
+                data = json.load(f)
+                class_names = data.get('names', [])
+                print(f"Loaded class names from model_artifacts.json: {class_names}")
+                return class_names
+        except Exception as e:
+            print(f"Error loading class names: {e}")
 
-    if not artifacts_path.exists():
-        print(f"Warning: model_artifacts.json not found")
-        print(f"Using default class names (class_0, class_1, ...)")
-        return None
-
-    try:
-        with open(artifacts_path, 'r') as f:
-            data = json.load(f)
-            class_names = data.get('names', [])
-            print(f"Loaded class names: {class_names}")
-            return class_names
-    except Exception as e:
-        print(f"Error loading class names: {e}")
-        return None
+    print(f"Warning: No class name file found (data.yaml or model_artifacts.json)")
+    print(f"Using default class names (class_0, class_1, ...)")
+    return None
 
 
 def check_upload_directory():

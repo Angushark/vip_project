@@ -2,20 +2,13 @@
 Auto-labeling script - Automatically label videos using YOLO model
 Saves individual frame images instead of video files
 """
-import torch
-
-# Monkey patch torch.load to disable weights_only for PyTorch 2.6
-_original_load = torch.load
-def patched_load(*args, **kwargs):
-    kwargs['weights_only'] = False
-    return _original_load(*args, **kwargs)
-torch.load = patched_load
 
 
 import sys
 from pathlib import Path
 from datetime import datetime
 import cv2
+import yaml
 from ultralytics import YOLO
 import config
 
@@ -102,14 +95,15 @@ def process_video_with_yolo(video_path, model, batch_name):
             if len(results) > 0 and results[0].boxes is not None:
                 boxes = results[0].boxes
                 for box in boxes:
-                    # Get box data
-                    cls = int(box.cls[0])
+                    # Get box data (use numeric class ID for Roboflow)
+                    cls_idx = int(box.cls[0])
 
                     # Get normalized coordinates (YOLO format)
                     x_center, y_center, width, height = box.xywhn[0].tolist()
 
-                    # Format: class x_center y_center width height (Roboflow standard YOLO format)
-                    label_lines.append(f"{cls} {x_center:.6f} {y_center:.6f} {width:.6f} {height:.6f}")
+                    # Format: class_id x_center y_center width height (Roboflow expects numeric IDs)
+                    # The class names will be mapped during upload by sync_to_roboflow.py
+                    label_lines.append(f"{cls_idx} {x_center:.6f} {y_center:.6f} {width:.6f} {height:.6f}")
 
             # Filter by minimum labels
             if config.MIN_LABELS_PER_IMAGE > 0 and len(label_lines) < config.MIN_LABELS_PER_IMAGE:
@@ -128,6 +122,21 @@ def process_video_with_yolo(video_path, model, batch_name):
 
     cap.release()
     return saved_count
+
+
+def load_class_names():
+    """Load class names from data.yaml"""
+    if not config.DATA_YAML_PATH.exists():
+        print(f"Warning: data.yaml not found at {config.DATA_YAML_PATH}")
+        print("Using numeric class IDs instead of names")
+        return None
+
+    with open(config.DATA_YAML_PATH, 'r') as f:
+        data = yaml.safe_load(f)
+
+    class_names = data.get('names', [])
+    print(f"Loaded class names: {class_names}")
+    return class_names
 
 
 def run_auto_labeling():
